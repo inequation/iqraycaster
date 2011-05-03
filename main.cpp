@@ -71,11 +71,11 @@ int main(int argc, char *argv[]) {
 	BlinnPhongShader red(Colour(1.f, 0.f, 0.f), Colour(1.f, 1.f, 1.f, 10.f));
 	BlinnPhongShader blue(Colour(0.f, 0.f, 1.f), Colour(1.f, 1.f, 1.f, 10.f));
 
-	Sphere s1(Vec3f(15, 1, 0), 3.f, red);
-	Sphere s2(Vec3f(26, -2, 2), 5.f, blue);
+	Sphere s1(Vec3f(7.5, 1, 0), 3.f, red);
+	Sphere s2(Vec3f(13, -2, 2), 5.f, blue);
 
-	PointLight p1(Vec3f(-3, 5, 10), Colour(1.f, 1.f, 1.f));
-	PointLight p2(Vec3f(-3, -5, -10), Colour(0.4f, 0.4f, 0.4f));
+	PointLight p1(Vec3f(-3, 5, 10), Colour(1.f, 1.f, 1.f), 400.f);
+	PointLight p2(Vec3f(-3, -5, -10), Colour(0.8f, 1.f, 1.f), 100.f);
 
 	Scene::GetInstance().GetShapes().push_back(&s1);
 	Scene::GetInstance().GetShapes().push_back(&s2);

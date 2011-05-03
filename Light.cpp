@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "Light.h"
 
-Light::Light(const Colour& c) : m_colour(c) {
+Light::Light(const Colour& c, float brightness) : m_colour(c), m_bright(brightness) {
 	m_colour.W() = 1.f;
 }
 

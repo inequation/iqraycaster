@@ -22,7 +22,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "PointLight.h"
 
-PointLight::PointLight(const Vec3f& location, const Colour& c) : Light(c), m_loc(location) {
+PointLight::PointLight(const Vec3f& location, const Colour& c, float brightness)
+	: Light(c, brightness), m_loc(location) {
 	//ctor
 }
 
@@ -32,6 +33,6 @@ PointLight::~PointLight() {
 
 void PointLight::Sample(const Vec3f& dst, float& out_attenuation, Vec3f& out_lightVector) const {
 	Vec3f L = dst - m_loc;
-	out_attenuation = std::min(1.f, 1.f / L.lengthSquared());
+	out_attenuation = std::min(1.f, this->m_bright / L.lengthSquared());
 	out_lightVector = L.normalized();
 }

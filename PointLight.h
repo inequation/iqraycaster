@@ -29,7 +29,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 class PointLight : public Light
 {
 	public:
-		PointLight(const Vec3f& location, const Colour& c);
+		PointLight(const Vec3f& location, const Colour& c, float brightness = 1.f);
 		virtual ~PointLight();
 
 		const Vec3f& GetLocation() const { return m_loc; }

@@ -44,11 +44,11 @@ Colour BlinnPhongShader::Sample(const Vec3f& point, const Vec3f& N, const Vec3f&
 		i != Scene::GetInstance().GetLights().end(); ++i) {
 		// diffuse
 		(*i)->Sample(point, att, L);
-		intensity = /*att * */std::max(0.f, L.dot(N));
+		intensity = att * std::max(0.f, L.dot(N));
 		accum += (*i)->GetColour() * m_diff * intensity;
 		// specular
 		H = Vec3f(L + V).normalized();
-		intensity = /*att * */pow(std::max(0.f, H.dot(N)), m_spec.W());
+		intensity = att * pow(std::max(0.f, H.dot(N)), m_spec.W());
 		accum += (*i)->GetColour() * m_spec * intensity;
 	}
 	accum.Clamp();

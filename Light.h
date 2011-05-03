@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 class Light
 {
 	public:
-		Light(const Colour& c);
+		Light(const Colour& c, float brightness = 1.f);
 		virtual ~Light();
 
 		const Colour& GetColour() const { return m_colour; }
@@ -36,6 +36,7 @@ class Light
 		virtual void Sample(const Vec3f& dst, float& out_attenuation, Vec3f& out_lightVector) const = 0;
 	protected:
 		Colour m_colour;
+		float m_bright;
 };
 
 #endif // LIGHT_H
