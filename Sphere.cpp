@@ -27,6 +27,9 @@ Sphere::Sphere(Vec3f location, float radius, Shader& s) : Shape(location, s), m_
 	//ctor
 }
 
+Sphere::Sphere(const Sphere& other) : Shape(other), m_radius(other.m_radius) {
+}
+
 Sphere::~Sphere() {
 	//dtor
 }

@@ -30,6 +30,7 @@ class Sphere : public Shape
 {
 	public:
 		Sphere(Vec3f location, float radius, Shader& s);
+		Sphere(const Sphere& other);
 		virtual ~Sphere();
 		float GetRadius() { return m_radius; }
 		void SetRadius(float val) { m_radius = val; }

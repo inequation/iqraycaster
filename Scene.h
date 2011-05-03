@@ -35,6 +35,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "Sphere.h"
 #include "PointLight.h"
 #include "BlinnPhongShader.h"
+#include "RaytraceShader.h"
 
 class Scene
 {
@@ -44,8 +45,11 @@ class Scene
 
 		LightList& GetLights() { return m_lights; }
 		ShapeList& GetShapes() { return m_shapes; }
+		float& GetAirRefractCoeff() {return m_airRefract;}
+		void SetAirRefractCoeff(float val) {m_airRefract = val;}
 
-		Shape *Intersect(const Ray& r, float& out_distance, Vec3f& out_point, Vec3f& out_normal) const;
+		Shape *Intersect(const Ray& r, float& out_distance, Vec3f& out_point, Vec3f& out_normal, Shape *omit = NULL) const;
+		void Render(int width, int height, unsigned char *framebuffer);
 
 		Camera Cam;
 
@@ -56,6 +60,8 @@ class Scene
 
 		LightList m_lights;
 		ShapeList m_shapes;
+
+		float m_airRefract;
 };
 
 #endif // SCENE_H

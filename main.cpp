@@ -27,52 +27,29 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 OIIO_NAMESPACE_USING
 
-void draw() {
-	const int w = 640;
-	const int h = 480;
+void draw(int w, int h, const char *fname) {
 	unsigned char buf[w * h * 3];
 
-	const float pw = Scene::GetInstance().Cam.GetZNear() * tanf(Scene::GetInstance().Cam.GetFOV() * 0.5);
-	const float ph = pw * (float)h / (float)w;
-	Vec3f view, target, p, n;
-	Shape *s;
-	float px, py, d;
-	for (int y = 0; y < h; ++y) {
-		py = 2.f * ((float)y / (h - 1) - 0.5) * ph;
-		for (int x = 0; x < w; ++x) {
-			px = 2.f * ((float)x / (w - 1) - 0.5) * pw;
-			view = Scene::GetInstance().Cam.CalcViewVector(px, py);
-			target = Scene::GetInstance().Cam.GetLocation() + view * Scene::GetInstance().Cam.GetZFar();
-			s = Scene::GetInstance().Intersect(Ray(Scene::GetInstance().Cam.GetLocation(), target), d, p, n);
-			if (!s) {
-				buf[(y * w + x) * 3 + 0] = 0;
-				buf[(y * w + x) * 3 + 1] = 0;
-				buf[(y * w + x) * 3 + 2] = 0;
-				continue;
-			}
-			const Colour& work = s->GetShader().Sample(p, n, view);
-			buf[(y * w + x) * 3 + 0] = work.X() * 255.f;
-			buf[(y * w + x) * 3 + 1] = work.Y() * 255.f;
-			buf[(y * w + x) * 3 + 2] = work.Z() * 255.f;
-		}
-	}
+	Scene::GetInstance().Render(w, h, buf);
 
-	ImageOutput *out = ImageOutput::create("scene.png");
+	ImageOutput *out = ImageOutput::create(fname);
 	if (!out)
 		return;
-	ImageSpec spec(640, 480, 3, TypeDesc::UINT8);
-	out->open("scene.png", spec);
+	ImageSpec spec(w, h, 3, TypeDesc::UINT8);
+	out->open(fname, spec);
 	out->write_image(TypeDesc::UINT8, buf);
 	out->close();
 	delete out;
 }
 
-int main(int argc, char *argv[]) {
-	BlinnPhongShader red(Colour(1.f, 0.f, 0.f), Colour(1.f, 1.f, 1.f, 10.f));
+int main(/*int argc, char *argv[]*/) {
+	//BlinnPhongShader red(Colour(1.f, 0.f, 0.f), Colour(1.f, 1.f, 1.f, 10.f));
 	BlinnPhongShader blue(Colour(0.f, 0.f, 1.f), Colour(1.f, 1.f, 1.f, 10.f));
+	RaytraceShader red(Colour(1.f, 0.f, 0.f), 0.6);
+	//RaytraceShader blue(Colour(0.f, 0.f, 1.f), 0.6);
 
-	Sphere s1(Vec3f(7.5, 1, 0), 3.f, red);
-	Sphere s2(Vec3f(13, -2, 2), 5.f, blue);
+	Sphere s1(Vec3f(3, 1.3, 0), 1.f, red);
+	Sphere s2(Vec3f(2, -0.7, 0), 1.f, blue);
 
 	PointLight p1(Vec3f(-3, 5, 10), Colour(1.f, 1.f, 1.f), 400.f);
 	PointLight p2(Vec3f(-3, -5, -10), Colour(0.8f, 1.f, 1.f), 100.f);
@@ -85,7 +62,7 @@ int main(int argc, char *argv[]) {
 	std::cout << "Rendering scene... ";
 	std::cout.flush();
 
-	draw();
+	draw(640, 480, "scene.png");
 
 	std::cout << "done.\n";
 

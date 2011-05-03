@@ -26,6 +26,9 @@ Shape::Shape(const Vec3f& location, Shader& shader) : m_loc(location), m_shader(
 	//ctor
 }
 
+Shape::Shape(const Shape& other) : m_loc(other.m_loc), m_shader(other.m_shader) {
+}
+
 Shape::~Shape()
 {
 	//dtor

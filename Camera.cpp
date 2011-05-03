@@ -22,7 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "Camera.h"
 
-Camera::Camera() : m_fwd(Vec3f(1, 0, 0)), m_right(Vec3f(0, 1, 0)), m_up(Vec3f(0, 0, 1)),
+Camera::Camera() : m_loc(Vec3f(0.f)), m_fwd(Vec3f(1, 0, 0)), m_right(Vec3f(0, 1, 0)), m_up(Vec3f(0, 0, 1)),
 	m_FOV(90.f / 180.f * M_PI), m_zNear(0.1), m_zFar(1024.f) {
 	//ctor
 }

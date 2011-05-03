@@ -31,6 +31,7 @@ class Shape
 {
 	public:
 		Shape(const Vec3f& location, Shader& shader);
+		Shape(const Shape& other);
 		virtual ~Shape();
 
 		virtual bool Intersect(const Ray& r, float& out_distance, Vec3f& out_point, Vec3f& out_normal) const = 0;
