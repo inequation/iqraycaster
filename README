@@ -1,0 +1,4 @@
+iqraycast - simple offline raycast renderer written for educational purposes
+By Leszek Godlewski <lg@inequation.org>
+
+Depends on OpenImageIO for image output (now) and texture reading (in the future).
