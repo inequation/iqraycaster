@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "Scene.h"
 #include <limits>
+#include <iostream>
 
 Scene::Scene() : m_airRefract(1.f) {
 	m_shapes.reserve(32);
@@ -37,7 +38,7 @@ Scene& Scene::GetInstance(void) {
 	return s;
 }
 
-Shape *Scene::Intersect(const Ray& r, float& out_distance, Vec3f& out_point, Vec3f& out_normal, Shape *omit) const {
+Shape *Scene::Intersect(const Ray& r, Vec3f *out_point, Vec3f *out_normal, Shape *omit, float *out_distance) const {
 	float d = std::numeric_limits<float>::max();
 	Shape *s = NULL;
 	Vec3f p, n;
@@ -53,9 +54,12 @@ Shape *Scene::Intersect(const Ray& r, float& out_distance, Vec3f& out_point, Vec
 			n = testn;
 		}
 	}
-	out_distance = d;
-	out_point = p;
-	out_normal = n;
+	if (out_distance)
+		*out_distance = d;
+	if (out_point)
+		*out_point = p;
+	if (out_normal)
+		*out_normal = n;
 	return s;
 }
 
@@ -64,21 +68,21 @@ void Scene::Render(int width, int height, unsigned char *framebuffer) {
 	const float ph = pw * (float)height / (float)width;
 	Vec3f view, target, p, n;
 	Shape *s;
-	float px, py, d;
+	float px, py;
 	for (int y = 0; y < height; ++y) {
 		py = 2.f * ((float)y / (height - 1) - 0.5) * ph;
 		for (int x = 0; x < width; ++x) {
 			px = 2.f * ((float)x / (width - 1) - 0.5) * pw;
 			view = this->Cam.CalcViewVector(px, py);
 			target = this->Cam.GetLocation() + view * this->Cam.GetZFar();
-			s = this->Intersect(Ray(this->Cam.GetLocation(), target), d, p, n);
+			s = this->Intersect(Ray(this->Cam.GetLocation(), target), &p, &n);
 			if (!s) {
 				framebuffer[(y * width + x) * 3 + 0] = 0;
 				framebuffer[(y * width + x) * 3 + 1] = 0;
 				framebuffer[(y * width + x) * 3 + 2] = 0;
 				continue;
 			}
-			const Colour& work = s->GetShader().Sample(p, n, view);
+			const Colour& work = s->GetShader().Sample(p, n, view, s);
 			framebuffer[(y * width + x) * 3 + 0] = work.X() * 255.f;
 			framebuffer[(y * width + x) * 3 + 1] = work.Y() * 255.f;
 			framebuffer[(y * width + x) * 3 + 2] = work.Z() * 255.f;

@@ -46,7 +46,7 @@
 			<Add option="-march=pentium-m" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
-			<Add option="-DUSE_SSE" />
+			<Add option="-DNUSE_SSE" />
 			<Add directory="../oiio-personal/dist/linux.debug/include" />
 		</Compiler>
 		<Linker>

@@ -48,10 +48,10 @@ int main(/*int argc, char *argv[]*/) {
 	RaytraceShader red(Colour(1.f, 0.f, 0.f), 0.6);
 	//RaytraceShader blue(Colour(0.f, 0.f, 1.f), 0.6);
 
-	Sphere s1(Vec3f(3, 1.3, 0), 1.f, red);
-	Sphere s2(Vec3f(2, -0.7, 0), 1.f, blue);
+	Sphere s1(Vec3f(2, 1.1, 0), 1.f, red);
+	Sphere s2(Vec3f(2, -1.1, 0), 1.f, blue);
 
-	PointLight p1(Vec3f(-3, 5, 10), Colour(1.f, 1.f, 1.f), 400.f);
+	PointLight p1(Vec3f(5, 2, 5), Colour(1.f, 1.f, 1.f), 400.f);
 	PointLight p2(Vec3f(-3, -5, -10), Colour(0.8f, 1.f, 1.f), 100.f);
 
 	Scene::GetInstance().GetShapes().push_back(&s1);

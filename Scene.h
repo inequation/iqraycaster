@@ -48,7 +48,7 @@ class Scene
 		float& GetAirRefractCoeff() {return m_airRefract;}
 		void SetAirRefractCoeff(float val) {m_airRefract = val;}
 
-		Shape *Intersect(const Ray& r, float& out_distance, Vec3f& out_point, Vec3f& out_normal, Shape *omit = NULL) const;
+		Shape *Intersect(const Ray& r, Vec3f *out_point = NULL, Vec3f *out_normal = NULL, Shape *omit = NULL, float *out_distance = NULL) const;
 		void Render(int width, int height, unsigned char *framebuffer);
 
 		Camera Cam;

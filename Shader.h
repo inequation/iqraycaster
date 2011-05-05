@@ -25,13 +25,16 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "Colour.h"
 
+// forward declaration
+class Shape;
+
 class Shader
 {
 	public:
 		Shader();
 		virtual ~Shader();
 
-		virtual Colour Sample(const Vec3f& point, const Vec3f& normal, const Vec3f& view) = 0;
+		virtual Colour Sample(const Vec3f& point, const Vec3f& normal, const Vec3f& view, Shape *self) = 0;
 	protected:
 		Vec3f WorldNormalToScreenNormal(const Vec3f& in);
 };

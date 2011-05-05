@@ -223,6 +223,9 @@ class Tuple4 {
 
 	protected:
 		T	m_v[4];
+
+		template <typename _T>
+		friend inline std::ostream& operator<<(std::ostream& out, const Tuple4<_T>& tuple);
 };
 
 template <typename T>

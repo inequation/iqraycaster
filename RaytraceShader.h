@@ -10,9 +10,9 @@ class RaytraceShader : public Shader
 		RaytraceShader(const Colour& colour, float reflectance);
 		virtual ~RaytraceShader();
 
-		Colour Sample(const Vec3f& point, const Vec3f& normal, const Vec3f& view);
+		Colour Sample(const Vec3f& point, const Vec3f& normal, const Vec3f& view, Shape *self);
 	protected:
-		Colour CastShapeRay(const Vec3f& src, const Vec3f& dir);
+		Colour CastShapeRay(const Vec3f& src, const Vec3f& dir, Shape *self);
 
 		Colour m_c;
 		float m_refl;

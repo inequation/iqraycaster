@@ -24,6 +24,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 // for lists traversal
 #include "Scene.h"
 #include "Ray.h"
+#include <iostream>
 
 RaytraceShader::RaytraceShader(const Colour& colour, float reflectance)
 	: m_c(colour), m_refl(reflectance) {
@@ -34,22 +35,24 @@ RaytraceShader::~RaytraceShader() {
 	//dtor
 }
 
-Colour RaytraceShader::CastShapeRay(const Vec3f& src, const Vec3f& dir) {
-	Ray r(src, dir * Scene::GetInstance().Cam.GetZFar());
-	float d;
+Colour RaytraceShader::CastShapeRay(const Vec3f& src, const Vec3f& dir, Shape *self) {
+	Ray r(src, src + dir.normalized() * Scene::GetInstance().Cam.GetZFar());
 	Vec3f p, n;
-	Shape *s = Scene::GetInstance().Intersect(r, d, p, n);
+	Shape *s = Scene::GetInstance().Intersect(r, &p, &n, self);
 	if (!s)
 		return Colour(0.f, 0.f, 0.f);
-	return s->GetShader().Sample(p, n, dir);
+	return s->GetShader().Sample(p, n, dir, self);
 }
 
-Colour RaytraceShader::Sample(const Vec3f& point, const Vec3f& N, const Vec3f& V) {
+Colour RaytraceShader::Sample(const Vec3f& point, const Vec3f& N, const Vec3f& V, Shape *self) {
 	Colour accum(0.f, 0.f, 0.f, 0.f);
 
 	// spawn a reflection ray
-	if (m_refl > 0.f)
-		accum += this->CastShapeRay(point, V - N * 2.f * N.dot(V)) * m_refl;
+	if (m_refl > 0.f) {
+		accum += this->CastShapeRay(point, V - N * 2.f * N.dot(V), self) * m_refl;
+		//if (/*accum.X() != 0.f || accum.Y() != 0.f || */accum.Z() != 0.f/* || accum.W() != 0.f*/)
+			//std::cout << "accum " << accum << '\n';
+	}
 	// spawn a refraction ray
 	//accum += Fresnel * this->CastRay(point, V - 2.f * N.dot(V) * N);
 	// add in Lambert
@@ -59,6 +62,10 @@ Colour RaytraceShader::Sample(const Vec3f& point, const Vec3f& N, const Vec3f& V
 		i != Scene::GetInstance().GetLights().end(); ++i) {
 		// diffuse
 		(*i)->Sample(point, att, L);
+		// check shadowing
+		Ray r(point, point + L * Scene::GetInstance().Cam.GetZFar());
+		if (Scene::GetInstance().Intersect(r, NULL, NULL, self) != NULL)
+			continue;
 		intensity = att * std::max(0.f, N.dot(L));
 		accum += (*i)->GetColour() * m_c * intensity;
 	}

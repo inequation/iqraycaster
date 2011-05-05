@@ -33,7 +33,7 @@ BlinnPhongShader::~BlinnPhongShader() {
 	//dtor
 }
 
-Colour BlinnPhongShader::Sample(const Vec3f& point, const Vec3f& N, const Vec3f& V) {
+Colour BlinnPhongShader::Sample(const Vec3f& point, const Vec3f& N, const Vec3f& V, Shape *self) {
 	//return Colour(N * 0.5 + Vec3f(0.5));
 	//return Colour(this->WorldNormalToScreenNormal(N) * 0.5 + Vec3f(0.5));
 	//float dot = N.dot(V) * 0.5 + 0.5; return Colour(1 - dot, 0.f, dot);

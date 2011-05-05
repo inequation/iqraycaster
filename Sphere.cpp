@@ -35,17 +35,20 @@ Sphere::~Sphere() {
 }
 
 bool Sphere::Intersect(const Ray& r, float& out_distance, Vec3f& out_point, Vec3f& out_normal) const {
-	float f = r.GetDir().dot(m_loc);
-	// early out
-	if ((f + m_radius) < r.GetProjectedStart() || (f - m_radius) > r.GetProjectedEnd())
+	float det, b, d2;
+	Vec3f p = r.GetStart() - this->m_loc;
+	b = -p.dot(r.GetDir());
+	det = b * b - p.lengthSquared() + this->m_radius * this->m_radius;
+	if (det < 0)
 		return false;
-	float d = Vec3f(m_loc - r.GetStart()).cross(Vec3f(m_loc - r.GetEnd())).length();
-	d /= r.GetLength();
-	if (d > m_radius)
+	det = sqrt(det);
+	out_distance = b - det;
+	d2 = b + det;
+	if (d2 < 0.f || d2 > r.GetLength() - this->m_radius)
 		return false;
-	float x = m_radius * sinf(acosf(d / m_radius));
-	out_distance = f + x;
+	if (out_distance < 0.f)
+		out_distance = 0.f;
 	out_point = r.GetStart() + r.GetDir() * out_distance;
-	out_normal = Vec3f(out_point - m_loc).normalized();
+	out_normal = Vec3f(out_point - this->m_loc).normalized();
 	return true;
 }
