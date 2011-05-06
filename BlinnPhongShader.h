@@ -31,7 +31,7 @@ class BlinnPhongShader : public Shader
 		BlinnPhongShader(const Colour& diffuse, const Colour& specular);
 		virtual ~BlinnPhongShader();
 
-		Colour Sample(const Vec3f& point, const Vec3f& normal, const Vec3f& view, Shape *self);
+		Colour Sample(const Vec3f& point, const Vec3f& normal, const Vec3f& view, unsigned int& rayCounter);
 	protected:
 		Colour m_diff;
 		Colour m_spec;

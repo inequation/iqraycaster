@@ -21,12 +21,14 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "Scene.h"
+#include <cstdlib>
 #include <limits>
 #include <iostream>
 
-Scene::Scene() : m_airRefract(1.f) {
+Scene::Scene() : m_airRefract(1.f), m_rayLimit(10) {
 	m_shapes.reserve(32);
 	m_lights.reserve(32);
+	srand((unsigned int)time(NULL));
 }
 
 Scene::~Scene() {
@@ -69,6 +71,7 @@ void Scene::Render(int width, int height, unsigned char *framebuffer) {
 	Vec3f view, target, p, n;
 	Shape *s;
 	float px, py;
+	unsigned int raycount;
 	for (int y = 0; y < height; ++y) {
 		py = 2.f * ((float)y / (height - 1) - 0.5) * ph;
 		for (int x = 0; x < width; ++x) {
@@ -77,15 +80,16 @@ void Scene::Render(int width, int height, unsigned char *framebuffer) {
 			target = this->Cam.GetLocation() + view * this->Cam.GetZFar();
 			s = this->Intersect(Ray(this->Cam.GetLocation(), target), &p, &n);
 			if (!s) {
-				framebuffer[(y * width + x) * 3 + 0] = 0;
-				framebuffer[(y * width + x) * 3 + 1] = 0;
-				framebuffer[(y * width + x) * 3 + 2] = 0;
+				framebuffer[((height - y - 1) * width + x) * 3 + 0] = 0;
+				framebuffer[((height - y - 1) * width + x) * 3 + 1] = 0;
+				framebuffer[((height - y - 1) * width + x) * 3 + 2] = 0;
 				continue;
 			}
-			const Colour& work = s->GetShader().Sample(p, n, view, s);
-			framebuffer[(y * width + x) * 3 + 0] = work.X() * 255.f;
-			framebuffer[(y * width + x) * 3 + 1] = work.Y() * 255.f;
-			framebuffer[(y * width + x) * 3 + 2] = work.Z() * 255.f;
+			raycount = 0;
+			const Colour& work = s->GetShader().Sample(p, n, view, raycount);
+			framebuffer[((height - y - 1) * width + x) * 3 + 0] = work.X() * 255.f;
+			framebuffer[((height - y - 1) * width + x) * 3 + 1] = work.Y() * 255.f;
+			framebuffer[((height - y - 1) * width + x) * 3 + 2] = work.Z() * 255.f;
 		}
 	}
 }

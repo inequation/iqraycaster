@@ -33,6 +33,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 // detail classes
 #include "Sphere.h"
+#include "Plane.h"
 #include "PointLight.h"
 #include "BlinnPhongShader.h"
 #include "RaytraceShader.h"
@@ -47,8 +48,11 @@ class Scene
 		ShapeList& GetShapes() { return m_shapes; }
 		float& GetAirRefractCoeff() {return m_airRefract;}
 		void SetAirRefractCoeff(float val) {m_airRefract = val;}
+		unsigned int GetRayDepthLimit() {return m_rayLimit;}
+		void SetRayDepthLimit(unsigned int val) {m_rayLimit = val;}
 
-		Shape *Intersect(const Ray& r, Vec3f *out_point = NULL, Vec3f *out_normal = NULL, Shape *omit = NULL, float *out_distance = NULL) const;
+		Shape *Intersect(const Ray& r, Vec3f *out_point = NULL, Vec3f *out_normal = NULL,
+			Shape *omit = NULL, float *out_distance = NULL) const;
 		void Render(int width, int height, unsigned char *framebuffer);
 
 		Camera Cam;
@@ -62,6 +66,7 @@ class Scene
 		ShapeList m_shapes;
 
 		float m_airRefract;
+		unsigned int m_rayLimit;
 };
 
 #endif // SCENE_H

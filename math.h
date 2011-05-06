@@ -26,6 +26,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 /// \addtogroup internal_API
 /// @{
 
+#include <cstdlib>
 #include <cassert>
 #include <cstring>
 #include <cmath>
@@ -423,6 +424,14 @@ class Vec3f : public Tuple4<float> {
 			return Vec3f(M_ARR[1] * other.M_ARR[2] - M_ARR[2] * other.M_ARR[1],
 				M_ARR[2] * other.M_ARR[0] - M_ARR[0] * other.M_ARR[2],
 				M_ARR[0] * other.M_ARR[1] - M_ARR[1] * other.M_ARR[0]);
+		}
+
+		static Vec3f random() {
+			return Vec3f(
+				2.f * (float)rand() / (float)RAND_MAX - 1.f,
+				2.f * (float)rand() / (float)RAND_MAX - 1.f,
+				2.f * (float)rand() / (float)RAND_MAX - 1.f
+			);
 		}
 };
 

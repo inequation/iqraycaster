@@ -61,6 +61,8 @@
 		<Unit filename="Colour.h" />
 		<Unit filename="Light.cpp" />
 		<Unit filename="Light.h" />
+		<Unit filename="Plane.cpp" />
+		<Unit filename="Plane.h" />
 		<Unit filename="PointLight.cpp" />
 		<Unit filename="PointLight.h" />
 		<Unit filename="Ray.cpp" />

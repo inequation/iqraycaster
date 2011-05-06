@@ -34,7 +34,7 @@ class PointLight : public Light
 
 		const Vec3f& GetLocation() const { return m_loc; }
 
-		void Sample(const Vec3f& dst, float& out_attenuation, Vec3f& out_lightVector) const;
+		bool Sample(const Vec3f& dst, float& out_attenuation, Vec3f& out_lightVector) const;
 	protected:
 		Vec3f m_loc;
 };

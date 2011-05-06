@@ -23,6 +23,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include "BlinnPhongShader.h"
 // for light list traversal
 #include "Scene.h"
+#include <iostream>
 
 BlinnPhongShader::BlinnPhongShader(const Colour& diffuse, const Colour& specular)
 	: m_diff(diffuse), m_spec(specular) {
@@ -33,7 +34,8 @@ BlinnPhongShader::~BlinnPhongShader() {
 	//dtor
 }
 
-Colour BlinnPhongShader::Sample(const Vec3f& point, const Vec3f& N, const Vec3f& V, Shape *self) {
+Colour BlinnPhongShader::Sample(const Vec3f& point, const Vec3f& N, const Vec3f& V,
+	unsigned int& rayCounter) {
 	//return Colour(N * 0.5 + Vec3f(0.5));
 	//return Colour(this->WorldNormalToScreenNormal(N) * 0.5 + Vec3f(0.5));
 	//float dot = N.dot(V) * 0.5 + 0.5; return Colour(1 - dot, 0.f, dot);
@@ -43,7 +45,8 @@ Colour BlinnPhongShader::Sample(const Vec3f& point, const Vec3f& N, const Vec3f&
 	for (Scene::LightList::iterator i = Scene::GetInstance().GetLights().begin();
 		i != Scene::GetInstance().GetLights().end(); ++i) {
 		// diffuse
-		(*i)->Sample(point, att, L);
+		if (!(*i)->Sample(point, att, L))
+			continue;
 		intensity = att * std::max(0.f, L.dot(N));
 		accum += (*i)->GetColour() * m_diff * intensity;
 		// specular

@@ -1,4 +1,11 @@
 iqraycast - simple offline raycast renderer written for educational purposes
 By Leszek Godlewski <lg@inequation.org>
 
+It's SLOW. I mean, really slow. There are no optimizations in place whatsoever
+- shape and light lists are simply iterated, there is no broadphase in collision
+detection, programming is probably bad OOP and so on. The idea was to quickly draft
+up a raytracer in order to grasp the essence of the raytracing algorithm itself.
+
+You have been warned.
+
 Depends on OpenImageIO for image output (now) and texture reading (in the future).

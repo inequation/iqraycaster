@@ -34,7 +34,8 @@ class Shader
 		Shader();
 		virtual ~Shader();
 
-		virtual Colour Sample(const Vec3f& point, const Vec3f& normal, const Vec3f& view, Shape *self) = 0;
+		virtual Colour Sample(const Vec3f& point, const Vec3f& normal, const Vec3f& view,
+			unsigned int& rayCounter) = 0;
 	protected:
 		Vec3f WorldNormalToScreenNormal(const Vec3f& in);
 };

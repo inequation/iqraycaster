@@ -28,7 +28,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 class Ray
 {
 	public:
-		Ray(const Vec3f& start, const Vec3f& end);
+		Ray(const Vec3f& start, const Vec3f& end, bool initialOffset = false);
 		virtual ~Ray();
 
 		const inline Vec3f& GetStart(void) const {return m_start;}
@@ -42,6 +42,8 @@ class Ray
 		Vec3f m_end;
 		Vec3f m_dir;
 		float m_projStart, m_projEnd, m_length;
+
+		static const float m_offsetEpsilon = 1e-4;
 };
 
 #endif // RAY_H

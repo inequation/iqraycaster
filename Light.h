@@ -33,7 +33,7 @@ class Light
 
 		const Colour& GetColour() const { return m_colour; }
 
-		virtual void Sample(const Vec3f& dst, float& out_attenuation, Vec3f& out_lightVector) const = 0;
+		virtual bool Sample(const Vec3f& dst, float& out_attenuation, Vec3f& out_lightVector) const = 0;
 	protected:
 		Colour m_colour;
 		float m_bright;

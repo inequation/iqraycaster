@@ -44,20 +44,37 @@ void draw(int w, int h, const char *fname) {
 
 int main(/*int argc, char *argv[]*/) {
 	//BlinnPhongShader red(Colour(1.f, 0.f, 0.f), Colour(1.f, 1.f, 1.f, 10.f));
-	BlinnPhongShader blue(Colour(0.f, 0.f, 1.f), Colour(1.f, 1.f, 1.f, 10.f));
-	RaytraceShader red(Colour(1.f, 0.f, 0.f), 0.6);
-	//RaytraceShader blue(Colour(0.f, 0.f, 1.f), 0.6);
+	RaytraceShader red(Colour(1.f, 0.f, 0.f), Colour(0.3, 0.3, 0.3, 8.f), 0.7, 0.f);
+	//BlinnPhongShader blue(Colour(0.f, 0.f, 1.f), Colour(1.f, 1.f, 1.f, 10.f));
+	RaytraceShader blue(Colour(0.f, 0.f, 1.f), Colour(1.f, 1.f, 1.f, 10.f), 0.5, 0.f, 1.5, 0.08);
+	BlinnPhongShader yellow(Colour(1.f, 0.5, 0.f), Colour(0.3, 0.3, 0.3, 2.f));
+	RaytraceShader mirror(Colour(0.f), Colour(0.f), 1.f, 0.f);
 
 	Sphere s1(Vec3f(2, 1.1, 0), 1.f, red);
 	Sphere s2(Vec3f(2, -1.1, 0), 1.f, blue);
-
-	PointLight p1(Vec3f(5, 2, 5), Colour(1.f, 1.f, 1.f), 400.f);
-	PointLight p2(Vec3f(-3, -5, -10), Colour(0.8f, 1.f, 1.f), 100.f);
+	Plane floor(Vec3f(0, 0, 1), -3.f, yellow);
+	Plane wallL(Vec3f(0, 1, 0), -10.f, yellow);
+	Plane wallR(Vec3f(0, -1, 0), -10.f, yellow);
+	Plane wallB(Vec3f(-1, 0, 0), -10.f, mirror);
+	Plane wallF(Vec3f(1, 0, 0), -10.f, yellow);
+	Plane ceil(Vec3f(0, 0, -1), -10.f, yellow);
 
 	Scene::GetInstance().GetShapes().push_back(&s1);
 	Scene::GetInstance().GetShapes().push_back(&s2);
+	Scene::GetInstance().GetShapes().push_back(&floor);
+	Scene::GetInstance().GetShapes().push_back(&wallL);
+	Scene::GetInstance().GetShapes().push_back(&wallR);
+	Scene::GetInstance().GetShapes().push_back(&wallB);
+	Scene::GetInstance().GetShapes().push_back(&wallF);
+	Scene::GetInstance().GetShapes().push_back(&ceil);
+
+	PointLight p1(Vec3f(-2, 3, 2), Colour(1.f, 1.f, 1.f), 400.f);
+	PointLight p2(Vec3f(-3, -2, -2.5), Colour(0.8f, 1.f, 1.f), 100.f);
+
 	Scene::GetInstance().GetLights().push_back(&p1);
 	Scene::GetInstance().GetLights().push_back(&p2);
+
+	Scene::GetInstance().Cam.SetLocation(Vec3f(-2.5, 0.8, 1.5));
 
 	std::cout << "Rendering scene... ";
 	std::cout.flush();

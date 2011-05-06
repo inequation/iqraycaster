@@ -21,10 +21,13 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "Ray.h"
+#include <limits>
 
-Ray::Ray(const Vec3f& start, const Vec3f& end) : m_start(start), m_end(end) {
+Ray::Ray(const Vec3f& start, const Vec3f& end, bool initialOffset) : m_start(start), m_end(end) {
 	m_dir = Vec3f(end - start);
 	m_dir.normalize();
+	if (initialOffset)
+		m_start += m_dir * this->m_offsetEpsilon;
 	m_projStart = m_dir.dot(m_start);
 	m_projEnd = m_dir.dot(m_end);
 	m_length = m_projEnd - m_projStart;
