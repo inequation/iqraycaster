@@ -21,25 +21,36 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "Scene.h"
-#include <OpenImageIO/imageio.h>
 #include <iostream>
 #include <cmath>
-
-OIIO_NAMESPACE_USING
+#include <png.h>
 
 void draw(int w, int h, const char *fname) {
 	unsigned char buf[w * h * 3];
 
 	Scene::GetInstance().Render(w, h, buf);
 
-	ImageOutput *out = ImageOutput::create(fname);
-	if (!out)
-		return;
-	ImageSpec spec(w, h, 3, TypeDesc::UINT8);
-	out->open(fname, spec);
-	out->write_image(TypeDesc::UINT8, buf);
-	out->close();
-	delete out;
+	png_structp	sp = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL,
+		NULL);
+	png_infop	ip = png_create_info_struct(sp);
+	setjmp(png_jmpbuf(sp));
+
+	FILE *f = fopen(fname, "wb");
+	png_init_io(sp, f);
+	png_set_compression_level(sp, 6);
+	png_set_IHDR(sp, ip, w, h, 8, PNG_COLOR_TYPE_RGB, PNG_INTERLACE_NONE,
+		PNG_COMPRESSION_TYPE_DEFAULT, PNG_FILTER_TYPE_DEFAULT);
+	png_set_oFFs(sp, ip, 0, 0, PNG_OFFSET_PIXEL);
+	png_write_info(sp, ip);
+	png_set_packing(sp);
+
+	for (int y = 0; y < h; ++y)
+		png_write_row(sp, (png_byte *)buf + (y * w * 3));
+
+	setjmp(png_jmpbuf(sp));
+	png_write_end(sp, NULL);
+	png_destroy_write_struct(&sp, &ip);
+	fclose(f);
 }
 
 int main(/*int argc, char *argv[]*/) {

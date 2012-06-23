@@ -43,15 +43,14 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-march=pentium-m" />
+			<Add option="-march=core2" />
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add option="-DNUSE_SSE" />
-			<Add directory="../oiio-personal/dist/linux.debug/include" />
 		</Compiler>
 		<Linker>
-			<Add library="OpenImageIO" />
-			<Add directory="../oiio-personal/dist/linux.debug/lib" />
+			<Add library="tbb" />
+			<Add library="png12" />
 		</Linker>
 		<Unit filename="BlinnPhongShader.cpp" />
 		<Unit filename="BlinnPhongShader.h" />
