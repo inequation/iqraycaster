@@ -25,11 +25,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #include <cmath>
 #include <png.h>
 
-void draw(int w, int h, const char *fname) {
-	unsigned char buf[w * h * 3];
-
-	Scene::GetInstance().Render(w, h, buf);
-
+void write_png(const unsigned char *buf, int w, int h, const char *fname) {
 	png_structp	sp = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL,
 		NULL);
 	png_infop	ip = png_create_info_struct(sp);
@@ -51,6 +47,14 @@ void draw(int w, int h, const char *fname) {
 	png_write_end(sp, NULL);
 	png_destroy_write_struct(&sp, &ip);
 	fclose(f);
+}
+
+void draw(int w, int h, const char *fname) {
+	unsigned char buf[w * h * 3];
+
+	Scene::GetInstance().Render(w, h, buf);
+
+
 }
 
 int main(/*int argc, char *argv[]*/) {

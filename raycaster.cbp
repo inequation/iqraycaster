@@ -43,13 +43,11 @@
 			</Target>
 		</Build>
 		<Compiler>
-			<Add option="-march=core2" />
 			<Add option="-Wall" />
-			<Add option="-fexceptions" />
+			<Add option="-fopenmp" />
 			<Add option="-DNUSE_SSE" />
 		</Compiler>
 		<Linker>
-			<Add library="tbb" />
 			<Add library="png12" />
 		</Linker>
 		<Unit filename="BlinnPhongShader.cpp" />

@@ -67,6 +67,8 @@ class Scene
 
 		float m_airRefract;
 		unsigned int m_rayLimit;
+
+		float m_pw, m_ph;
 };
 
 #endif // SCENE_H

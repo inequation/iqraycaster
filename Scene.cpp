@@ -66,8 +66,8 @@ Shape *Scene::Intersect(const Ray& r, Vec3f *out_point, Vec3f *out_normal, Shape
 }
 
 void Scene::Render(int width, int height, unsigned char *framebuffer) {
-	const float pw = this->Cam.GetZNear() * tanf(this->Cam.GetFOV() * 0.5);
-	const float ph = pw * (float)height / (float)width;
+	m_pw = this->Cam.GetZNear() * tanf(this->Cam.GetFOV() * 0.5);
+	m_ph = pw * (float)height / (float)width;
 	Vec3f view, target, p, n;
 	Shape *s;
 	float px, py;
